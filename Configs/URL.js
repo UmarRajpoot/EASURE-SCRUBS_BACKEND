@@ -1,1 +1,1 @@
-export const BASEURL = "http://easure.hostionic.com/";
+export const BASEURL = "https://easure.hostionic.com/";
