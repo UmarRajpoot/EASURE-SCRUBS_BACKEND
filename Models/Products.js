@@ -56,6 +56,10 @@ const Products = sequelize.define("products", {
     allowNull: true,
     defaultValue: false,
   },
+  suggestions: {
+    type: Sequelize.ARRAY(Sequelize.STRING),
+    allowNull: true,
+  },
 });
 
 export default Products;
