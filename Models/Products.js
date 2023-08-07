@@ -51,6 +51,11 @@ const Products = sequelize.define("products", {
     type: Sequelize.JSONB,
     allowNull: false,
   },
+  trend: {
+    type: Sequelize.BOOLEAN,
+    allowNull: true,
+    defaultValue: false,
+  },
 });
 
 export default Products;
