@@ -34,10 +34,7 @@ app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(
   cors({
-    origin: [
-      "https://admin-easure.netlify.app/",
-      "https://easure.netlify.app/",
-    ],
+    origin: ["https://admin-easure.netlify.app", "https://easure.netlify.app"],
     credentials: true,
   })
 );
