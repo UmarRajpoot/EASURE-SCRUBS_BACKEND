@@ -96,81 +96,45 @@ export default {
       // Photo Deleting
       let PhotosResponse = [];
 
-      if (ProductDataValues.productimage) {
-        ProductDataValues.productimage.map((element) => {
-          const fileNamePath = path.join(
-            path.resolve("./"),
-            "public",
-            "images",
-            "product",
-            element.split("/").splice(-2)[0],
-            element.split("/").splice(-1).toString()
-          );
-          const folderNamePath = path.join(
-            path.resolve("./"),
-            "public",
-            "images",
-            "product",
-            element.split("/").splice(-2)[0]
-          );
-          fs.rm(fileNamePath, (err) => {
-            if (err) {
-              console.log("There is no File");
-              PhotosResponse.push("Files are not deleted");
-            } else {
-              console.log("Files are deleted");
-              PhotosResponse.push("Files are deleted");
-              fs.rmdir(folderNamePath, (err) => {
-                if (err) {
-                  PhotosResponse.push("Folder is not deleted");
-                } else {
-                  console.log("Folder Deleted.");
-                  PhotosResponse.push("Folder is deleted");
-                }
-              });
-            }
-          });
-        });
+      if (
+        ProductDataValues.productimage.length !== 0 ||
+        ProductDataValues.productvideo.length !== ""
+      ) {
+        const ImageFolderPath = path.join(
+          path.resolve("./"),
+          "public",
+          "images",
+          "product",
+          ProductDataValues.productimage[0]?.split("/").splice(-2)[0] || ""
+        );
+        const VideoFolderPath = path.join(
+          path.resolve("./"),
+          "public",
+          "videos",
+          "product",
+          ProductDataValues.productimage[0]?.split("/").splice(-2)[0] || ""
+        );
 
-        // Video Deleting
-        let ProductVideo = ProductDataValues.productvideo;
-        const fileNamePath = path.join(
-          path.resolve("./"),
-          "public",
-          "videos",
-          "product",
-          ProductVideo.split("/").splice(-2)[0],
-          ProductVideo.split("/").splice(-1).toString()
-        );
-        const folderNamePath = path.join(
-          path.resolve("./"),
-          "public",
-          "videos",
-          "product",
-          ProductVideo.split("/").splice(-2)[0]
-        );
-        fs.rm(fileNamePath, (err) => {
+        fs.rm(ImageFolderPath, { recursive: true, force: true }, (err) => {
           if (err) {
-            console.log("There is no File");
-            PhotosResponse.push("Files are not deleted");
+            console.log(err);
           } else {
-            console.log("Files are deleted");
-            PhotosResponse.push("Files are deleted");
-            fs.rmdir(folderNamePath, (err) => {
-              if (err) {
-                PhotosResponse.push("Folder is not deleted");
-              } else {
-                console.log("Folder Deleted.");
-                PhotosResponse.push("Folder is deleted");
-              }
-            });
+            PhotosResponse.push("Images Folder Deleted.");
+            console.log("Images Folder Removes");
+          }
+        });
+        fs.rm(VideoFolderPath, { recursive: true, force: true }, (err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            PhotosResponse.push("Videos Folder Deleted.");
+            console.log("Videos Folder Removes");
           }
         });
       }
-
       const delProduct = await Product.destroy({
         where: {
-          productname: productname,
+          productname: ProductDataValues.productname,
         },
       })
         .then((resp) => {
@@ -286,6 +250,7 @@ export default {
         },
       });
 
+      // Filters by color e.g black, navy-blue, ceil-blue
       let finalProducts = [];
       getAllProducts.filter((filPro) => {
         if (
@@ -297,11 +262,25 @@ export default {
         }
       });
 
-      // res.send({ final: finalProducts.length });
+      // Filters by typestylename e.g top, pants, set
+
+      let extrafinalProducts = [];
+      let remainingfinalProducts = [];
+      let styleValues = ["top", "pants", "set"];
+
+      styleValues.map((style) => {
+        return finalProducts.filter((filProd) => {
+          if (filProd.typestylename.toLowerCase() === style) {
+            return extrafinalProducts.push(filProd);
+          }
+        });
+      });
+
+      // res.send({ final: finalProducts.length }); // finalProducts
       return res.status(200).send({
         success: true,
         message: "Get Products by Color and Category",
-        response: finalProducts,
+        response: extrafinalProducts,
       });
     } catch (error) {
       return next(

@@ -38,6 +38,7 @@ app.use(
       "https://admin-easure.netlify.app",
       "https://easure.netlify.app",
       "http://localhost:3000",
+      "http://localhost:3001",
     ],
     credentials: true,
   })
