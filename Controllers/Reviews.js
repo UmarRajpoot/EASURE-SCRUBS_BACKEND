@@ -6,6 +6,7 @@ export default {
   addReview: async (req, res, next) => {
     try {
       const Reviews_joi_schema = Joi.object({
+        starcount: Joi.number().required(),
         title: Joi.string().required().trim(),
         desc: Joi.string().required().trim(),
         productID: Joi.string().required().trim(),
@@ -15,9 +16,10 @@ export default {
         warnings: true,
       });
 
-      const { title, desc, productID } = validatesResult.value;
+      const { starcount, title, desc, productID } = validatesResult.value;
 
       const AddColor = await Review.create({
+        starcount,
         title,
         desc,
         productID,

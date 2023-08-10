@@ -7,6 +7,11 @@ const Review = sequelize.define("review", {
     defaultValue: Sequelize.UUIDV4,
     primaryKey: true,
   },
+  starcount: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
   title: {
     type: Sequelize.STRING,
     allowNull: false,
