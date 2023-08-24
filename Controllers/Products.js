@@ -288,4 +288,51 @@ export default {
       );
     }
   },
+  updateVideoUrl: async (req, res, next) => {
+    try {
+      const Product_joi_schema = Joi.object({
+        productname: Joi.string().uppercase().required().trim(),
+        videoURL: Joi.string().required().trim(),
+      });
+      const validatesResult = await Product_joi_schema.validateAsync(req.body, {
+        errors: true,
+        warnings: true,
+      });
+
+      const { productname, videoURL } = validatesResult.value;
+      const getProductByname = await Product.findOne({
+        where: {
+          productname: productname,
+        },
+      });
+      if (getProductByname) {
+        const updateVideoURL = await Product.update(
+          {
+            productvideo: videoURL,
+          },
+          {
+            where: {
+              productname: getProductByname.dataValues.productname,
+            },
+            returning: true,
+          }
+        )
+          .then((resp) => {
+            return res.status(200).send({
+              success: true,
+              response: resp,
+            });
+          })
+          .catch((error) => {
+            return next(
+              createHttpError(406, { success: false, message: error.message })
+            );
+          });
+      }
+    } catch (error) {
+      return next(
+        createHttpError(406, { success: false, message: error.message })
+      );
+    }
+  },
 };

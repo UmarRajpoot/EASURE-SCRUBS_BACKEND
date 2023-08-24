@@ -18,6 +18,7 @@ const Products = sequelize.define("products", {
   productvideo: {
     type: Sequelize.STRING,
     allowNull: true,
+    defaultValue: "",
   },
   parentcategory: {
     type: Sequelize.STRING,
