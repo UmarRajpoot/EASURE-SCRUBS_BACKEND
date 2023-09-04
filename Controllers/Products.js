@@ -335,4 +335,44 @@ export default {
       );
     }
   },
+  updateSuggestions: async (req, res, next) => {
+    try {
+      const Product_joi_schema = Joi.object({
+        productname: Joi.string().uppercase().required().trim(),
+        suggestions: Joi.array().required(),
+      });
+      const validatesResult = await Product_joi_schema.validateAsync(req.body, {
+        errors: true,
+        warnings: true,
+      });
+
+      const { productname, suggestions } = validatesResult.value;
+
+      const getProductByName = await Product.update(
+        {
+          suggestions: suggestions,
+        },
+        {
+          where: {
+            productname: productname,
+          },
+        }
+      )
+        .then((resp) => {
+          return res.status(200).send({
+            success: true,
+            response: resp,
+          });
+        })
+        .catch((error) => {
+          return next(
+            createHttpError(406, { success: false, message: error.message })
+          );
+        });
+    } catch (error) {
+      return next(
+        createHttpError(406, { success: false, message: error.message })
+      );
+    }
+  },
 };
