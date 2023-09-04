@@ -61,6 +61,10 @@ const Products = sequelize.define("products", {
     type: Sequelize.ARRAY(Sequelize.STRING),
     allowNull: true,
   },
+  displayImage: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
 });
 
 export default Products;

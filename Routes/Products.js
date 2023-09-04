@@ -12,5 +12,7 @@ router.get(
   "/collection/:productcolorandcategory",
   Product.getProductsByColorandCateg
 );
+// Set Displat Image for products
+router.patch("/Product/displayImage", Product.addDisplayImage);
 
 export default router;
