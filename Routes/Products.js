@@ -12,7 +12,5 @@ router.get(
   "/collection/:productcolorandcategory",
   Product.getProductsByColorandCateg
 );
-// Update Suggestions
-router.patch("/Product/suggestion", Product.updateSuggestions);
 
 export default router;
