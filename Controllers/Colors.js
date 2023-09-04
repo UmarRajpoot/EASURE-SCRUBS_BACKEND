@@ -81,19 +81,31 @@ export default {
   },
   getallColors: async (req, res, next) => {
     try {
-      const getAllColors = await Colors.findAll()
-        .then((resp) => {
-          return res.status(200).send({
-            success: true,
-            message: "Get all Colors",
-            response: resp,
-          });
+      let theColors = [];
+      const getAllColors = await Colors.findAll().then((resp) =>
+        resp?.map((response) => {
+          theColors.push(response);
         })
-        .catch((error) => {
-          return next(
-            createHttpError(406, { success: false, message: error.message })
-          );
+      );
+
+      let extrafinalShopByColors = [];
+      let styleValues = ["BLACK", "CEIL-BLUE", "NAVY-BLUE"];
+      // console.log("The Colors", theColors);
+
+      styleValues.map((style) => {
+        return theColors.filter((filColor) => {
+          // console.log(filColor.dataValues);
+          if (filColor.dataValues.name === style) {
+            return extrafinalShopByColors.push(filColor);
+          }
         });
+      });
+
+      return res.status(200).send({
+        success: true,
+        message: "Get all Colors",
+        response: extrafinalShopByColors,
+      });
     } catch (error) {
       return next(
         createHttpError(406, { success: false, message: error.message })
