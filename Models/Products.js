@@ -49,7 +49,7 @@ const Products = sequelize.define("products", {
     allowNull: false,
   },
   colors: {
-    type: Sequelize.JSONB,
+    type: Sequelize.JSON,
     allowNull: false,
   },
   trend: {

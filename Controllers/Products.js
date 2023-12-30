@@ -18,7 +18,7 @@ export default {
         typestylename: Joi.string().required().trim(),
         price: Joi.number().required(),
         sizes: Joi.array().required(),
-        colors: Joi.array().required(),
+        colors: Joi.object().required(),
       });
       const validatesResult = await Product_joi_schema.validateAsync(req.body, {
         errors: true,
@@ -339,18 +339,18 @@ export default {
     try {
       const Product_joi_schema = Joi.object({
         productname: Joi.string().uppercase().required().trim(),
-        displayImage: Joi.string().required().trim(),
+        productimage: Joi.array().required(),
       });
       const validatesResult = await Product_joi_schema.validateAsync(req.body, {
         errors: true,
         warnings: true,
       });
 
-      const { productname, displayImage } = validatesResult.value;
+      const { productname, productimage } = validatesResult.value;
 
       const updateDisplayImage = await Product.update(
         {
-          displayImage: displayImage,
+          productimage: productimage,
         },
         {
           where: {

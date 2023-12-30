@@ -89,7 +89,14 @@ export default {
       );
 
       let extrafinalShopByColors = [];
-      let styleValues = ["BLACK", "CEIL-BLUE", "NAVY-BLUE"];
+      let styleValues = [
+        "BLACK",
+        "CEIL-BLUE",
+        "WINE",
+        "ROYAL-BLUE",
+        "PEWT",
+        "NAVY-BLUE",
+      ];
       // console.log("The Colors", theColors);
 
       styleValues.map((style) => {
