@@ -259,7 +259,6 @@ export default {
       let PCate = productcolorandcategory.split("-").slice(-1).toString();
       // console.log("Color is", color, "and", "parent Cate", PCate);
       const getAllColors = await Colors.findAll({});
-
       const getSpecColor = getAllColors.filter((Fcolor) => {
         if (Fcolor.dataValues.name === color.toUpperCase()) {
           return Fcolor.dataValues.colorcode;
@@ -274,16 +273,11 @@ export default {
       // Filters by color e.g black, navy-blue, ceil-blue
       let finalProducts = [];
       getAllProducts.filter((filPro) => {
-        if (
-          filPro.dataValues.colors[0].colors.includes(
-            getSpecColor[0].colorcode
-          ) === true
-        ) {
+        if (filPro.dataValues.colors.code === getSpecColor[0].colorcode) {
           finalProducts.push(filPro);
         }
       });
       // Filters by typestylename e.g top, pants, set
-
       let extrafinalProducts = [];
       let styleValues = ["top", "pants", "set"];
 

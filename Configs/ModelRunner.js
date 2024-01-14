@@ -13,8 +13,8 @@ sequelize
 
 // Add all data and Sync
 
-sequelize.sync({ alter: true }).then(() => {
-  console.log("Sync Done.");
-});
+// sequelize.sync({ alter: true }).then(() => {
+//   console.log("Sync Done.");
+// });
 
 export default sequelize;
