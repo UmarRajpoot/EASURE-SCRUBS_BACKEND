@@ -179,7 +179,7 @@ export default {
   getProductByParams: async (req, res, next) => {
     try {
       const Product_joi_schema = Joi.object({
-        productname: Joi.string().uppercase().required().trim(),
+        id: Joi.string().required().trim(),
       });
       const validatesResult = await Product_joi_schema.validateAsync(
         req.params,
@@ -189,17 +189,39 @@ export default {
         }
       );
 
-      const { productname } = validatesResult.value;
+      const { id } = validatesResult.value;
+
       const getProductByParams = await Product.findOne({
         where: {
-          productname: productname,
+          id: id,
+        },
+      });
+
+      const { parentcategory, varientname, typestylename, personname } =
+        getProductByParams.dataValues;
+
+      const getColors = await Product.findAll({
+        where: {
+          parentcategory,
+          varientname,
+          typestylename,
         },
       })
         .then((resp) => {
+          let colorsList = [];
+          let allColors = resp.filter((product) => {
+            if (product.dataValues.id !== getProductByParams.id) {
+              return colorsList.push({
+                productId: product.dataValues.id,
+                colors: product.dataValues.colors,
+              });
+            }
+          });
           return res.status(200).send({
             success: true,
             message: "Get Products by params",
-            response: resp,
+            response: getProductByParams.dataValues,
+            colors: colorsList,
           });
         })
         .catch((error) => {
@@ -249,7 +271,6 @@ export default {
           parentcategory: PCate,
         },
       });
-
       // Filters by color e.g black, navy-blue, ceil-blue
       let finalProducts = [];
       getAllProducts.filter((filPro) => {
@@ -261,11 +282,9 @@ export default {
           finalProducts.push(filPro);
         }
       });
-
       // Filters by typestylename e.g top, pants, set
 
       let extrafinalProducts = [];
-      let remainingfinalProducts = [];
       let styleValues = ["top", "pants", "set"];
 
       styleValues.map((style) => {
@@ -338,15 +357,17 @@ export default {
   addDisplayImage: async (req, res, next) => {
     try {
       const Product_joi_schema = Joi.object({
-        productname: Joi.string().uppercase().required().trim(),
+        id: Joi.string().uppercase().required().trim(),
         productimage: Joi.array().required(),
+        // colors: Joi.object().required(),
+        // suggestions: Joi.array().required(),
       });
       const validatesResult = await Product_joi_schema.validateAsync(req.body, {
         errors: true,
         warnings: true,
       });
 
-      const { productname, productimage } = validatesResult.value;
+      const { id, productimage } = validatesResult.value;
 
       const updateDisplayImage = await Product.update(
         {
@@ -354,7 +375,7 @@ export default {
         },
         {
           where: {
-            productname: productname,
+            id: id,
           },
         }
       )
