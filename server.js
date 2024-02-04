@@ -22,6 +22,8 @@ import Product from "./Routes/Products.js";
 import PhotoUpload from "./Routes/PhotoUpload.js";
 import Orders from "./Routes/Orders.js";
 import Reviews from "./Routes/Reviews.js";
+// Payment Gateway
+import StripeRoutes from "./Routes/StripeRoutes.js";
 
 import fileUpload from "express-fileupload";
 import { fileURLToPath } from "url";
@@ -71,6 +73,8 @@ app.use("/api", Colors);
 app.use("/api", Product);
 app.use("/api", Orders);
 app.use("/api", Reviews);
+// Payment Gateway
+app.use("/api", StripeRoutes);
 // photos upload
 app.use("/api", PhotoUpload);
 
