@@ -390,4 +390,51 @@ export default {
       );
     }
   },
+
+  UpdateProduct: async (req, res, next) => {
+    try {
+      const Product_joi_schema = Joi.object({
+        id: Joi.string().uppercase().required().trim(),
+        colors: Joi.object().required(),
+        price: Joi.number().required(),
+        sizes: Joi.array().required(),
+        // suggestions: Joi.array().required(),
+      });
+      const validatesResult = await Product_joi_schema.validateAsync(req.body, {
+        errors: true,
+        warnings: true,
+      });
+
+      const { id, colors, price, sizes } = validatesResult.value;
+
+      const updateProduct = await Product.update(
+        {
+          colors: colors,
+          price: price,
+          sizes: sizes,
+        },
+        {
+          where: {
+            id: id,
+          },
+          returning: true,
+        }
+      )
+        .then((resp) => {
+          return res.status(200).send({
+            success: true,
+            response: resp[1],
+          });
+        })
+        .catch((error) => {
+          return next(
+            createHttpError(406, { success: false, message: error.message })
+          );
+        });
+    } catch (error) {
+      return next(
+        createHttpError(406, { success: false, message: error.message })
+      );
+    }
+  },
 };

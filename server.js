@@ -22,6 +22,9 @@ import Product from "./Routes/Products.js";
 import PhotoUpload from "./Routes/PhotoUpload.js";
 import Orders from "./Routes/Orders.js";
 import Reviews from "./Routes/Reviews.js";
+import Returns from "./Routes/Returns.js";
+import Cart from "./Routes/Cart.js";
+import Contact from "./Routes/Contact.js";
 // Payment Gateway
 import StripeRoutes from "./Routes/StripeRoutes.js";
 
@@ -73,6 +76,9 @@ app.use("/api", Colors);
 app.use("/api", Product);
 app.use("/api", Orders);
 app.use("/api", Reviews);
+app.use("/api", Returns);
+app.use("/api", Cart);
+app.use("/api", Contact);
 // Payment Gateway
 app.use("/api", StripeRoutes);
 // photos upload

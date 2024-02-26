@@ -7,6 +7,15 @@ const Orders = sequelize.define("orders", {
     defaultValue: Sequelize.UUIDV4,
     primaryKey: true,
   },
+  order_id: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  email: {
+    type: Sequelize.STRING,
+    allowNull: true,
+    unique: false,
+  },
   country: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -42,6 +51,35 @@ const Orders = sequelize.define("orders", {
   orderItems: {
     type: DataTypes.JSONB,
     allowNull: false,
+  },
+  subTotal: {
+    type: DataTypes.FLOAT,
+    allowNull: false, // 0
+    defaultValue: 0,
+  },
+  shippingCharges: {
+    type: DataTypes.FLOAT,
+    allowNull: false, // 0
+    defaultValue: 0,
+  },
+  total: {
+    type: DataTypes.FLOAT,
+    allowNull: false, // 0
+    defaultValue: 0,
+  },
+  status: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: "unpaid",
+  },
+  gender: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  emailSended: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
   },
 });
 

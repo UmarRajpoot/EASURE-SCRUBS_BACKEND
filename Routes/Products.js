@@ -14,5 +14,6 @@ router.get(
 );
 // Set Displat Image for products
 router.patch("/Product/displayImage", Product.addDisplayImage);
+router.put("/Product", Product.UpdateProduct);
 
 export default router;
