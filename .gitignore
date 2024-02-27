@@ -2,4 +2,9 @@ node_modules
 /public/images/*
 /public/videos/*
 
+<<<<<<< HEAD
 .env
+=======
+.env
+db_ensure.bak
+>>>>>>> e5e9c0c (.env added)
